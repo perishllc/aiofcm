@@ -9,7 +9,7 @@ STATUS_SUCCESS = 'SUCCESS'
 
 
 class Message:
-    __slots__ = ('device_token', 'notification', 'data', 'priority',
+    __slots__ = ('device_token', 'notification', 'data', 'priority', 'content_available',
                  'message_id', 'time_to_live', 'collapse_key')
 
     def __init__(
@@ -18,6 +18,7 @@ class Message:
             notification: Optional[Dict[str, Any]] = None,
             data: Optional[Dict[str, Any]] = None,
             priority: Optional[str] = None,
+            content_available: Optional[bool] = False,
             message_id: Optional[str] = None,
             time_to_live: Optional[int] = None,
             collapse_key: Optional[str] = None):
@@ -26,6 +27,7 @@ class Message:
         self.notification = notification
         self.data = data
         self.priority = priority
+        self.content_available = content_available
         self.message_id = message_id or str(uuid4())
         self.time_to_live = time_to_live
         self.collapse_key = collapse_key
@@ -36,7 +38,7 @@ class Message:
             to=self.device_token,
         )
 
-        for field in ('notification', 'data', 'priority', 'time_to_live',
+        for field in ('notification', 'data', 'priority', 'content_available', 'time_to_live',
                       'collapse_key'):
             value = getattr(self, field, None)
             if value is not None:
